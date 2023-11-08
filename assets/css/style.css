@@ -4,11 +4,174 @@
 *::after,
 *::before {
   margin: 0;
-  padding:0;
+  padding: 0;
   box-sizing: border-box;
   border: none;
   outline: none;
-    font-family: 'Poppins', sans-serif;
-    /* font-family: 'Roboto', sans-serif; */
+  list-style: none;
+  text-decoration: none;
+  text-transform: capitalize;
+  font-family: 'Poppins', sans-serif;
+  /* font-family: 'Roboto', sans-serif; */
 }
 
+.material-symbols-outlined {
+  font-variation-settings:
+    'FILL' 0,
+    'wght' 400,
+    'GRAD' 0,
+    'opsz' 12;
+  padding: 5px;
+  cursor: pointer;
+  color: #fff;
+}
+
+.container {
+  width: 100%;
+  height: 100vh;
+  background-color: black;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 80px;
+}
+
+
+/* ----------------- ToDo List ----------------- */
+.todoListWrapper {
+  width: 400px;
+  min-height: 330px;
+  padding: 20px;
+  background-color: #222;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 30px;
+}
+
+.form {
+  width: 100%;
+  background-color: #222;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#inputTask {
+  padding: 10px 15px;
+  width: 100%;
+  color: beige;
+  letter-spacing: 0.5px;
+  background-color: transparent;
+  border-radius: 20px;
+  font-size: 18px;
+  font-weight: 500;
+  box-shadow: inset 5px 5px 5px rgba(0, 0, 0, 0.2),
+    inset -5px 5px 5px rgba(0, 0, 0, 0.2),
+    inset 5px -5px 5px rgba(0, 0, 0, 0.2),
+    inset -5px -5px 5px rgba(0, 0, 0, 0.2);
+}
+
+#taskList,
+#taskList {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+
+.taskItem,
+.doneItem {
+  width: 100%;
+  padding: 10px 0 10px 10px;
+  font-weight: 500;
+  background-color: pink;
+  border-radius: 10px;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.doneItem {
+  background-color: rgb(76, 4, 16);
+}
+
+.taskContent {
+  margin-right: auto;
+}
+
+.doneMark,
+.statusChecked,
+.deleteTask,
+.restoreTask,
+.editTask {
+  width: 35px;
+  height: 35px;
+  background-color: #222;
+  border-radius: 50%;
+  margin-right: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.statusChecked {
+  background-color: #222;
+}
+
+.deleteTask {
+  /* margin-left: 5px; */
+}
+
+
+
+
+
+
+
+
+
+
+
+
+/* ----------------- Done List ----------------- */
+.doneListWrapper {
+  width: 400px;
+  min-height: 330px;
+  padding: 20px;
+  background-color: #222;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 30px;
+}
+
+.donesTitle {
+  width: 100%;
+  padding: 10px 15px;
+  background-color: deeppink;
+
+}
+
+
+
+
+
+/* ---------------- Reasponsive ---------------- */
+
+@media (max-width:700px) {
+
+  .container {
+    gap: 20px;
+  }
+
+  .container>div {
+    width: 340px;
+  }
+}
