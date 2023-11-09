@@ -18,23 +18,21 @@
                 <input type="text" id="inputTask">
             </form>
 
-            <ul id="taskList">
-                <li class="taskItem">
-                    <i class="material-symbols-outlined doneMark">done</i>
-                    <span class="taskContent">Task 1</span>
-                    <i class="material-symbols-outlined editTask">edit_square</i>
-                    <i class="material-symbols-outlined deleteTask">delete</i>
-                </li>
-            </ul>
+            <div class="btnsWrapper">
+                <button class="addBtn">Add Task</button>
+                <button class="editBtn">Edit Task</button>
+            </div>
+
+            <ul id="taskList"></ul>
 
         </div>
 
         <div class="doneListWrapper">
             <h3 class="donesTitle">Task Dones :</h3>
-            <ul id="taskList">
+            <ul id="doneList">
                 <li class="doneItem">
                     <i class="material-symbols-outlined statusChecked">close</i>
-                    <span class="taskContent">Done 1</span>
+                    <span class="doneContent">Done 1</span>
                     <i class="material-symbols-outlined restoreTask">restart_alt</i>
                     <i class="material-symbols-outlined deleteTask">delete</i>
                 </li>
