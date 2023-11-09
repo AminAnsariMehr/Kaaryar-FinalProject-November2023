@@ -1,34 +1,4 @@
 {
-  "todoTasks": [
-    {
-      "todoTask": "meMe ansari mehr2",
-      "id": 4
-    },
-    {
-      "todoTask": "fatomaah",
-      "id": 5
-    },
-    {
-      "todoTask": "dsdasd",
-      "id": 6
-    },
-    {
-      "todoTask": "sadasdas",
-      "id": 7
-    },
-    {
-      "todoTask": "saddsasds",
-      "id": 8
-    },
-    {
-      "todoTask": "sadsadsa",
-      "id": 9
-    }
-  ],
-  "doneTasks": [
-    {
-      "doneTask": "amin",
-      "id": 2
-    }
-  ]
+  "todoTasks": [],
+  "doneTasks": []
 }
