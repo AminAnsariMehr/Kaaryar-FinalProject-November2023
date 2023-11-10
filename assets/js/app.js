@@ -21,10 +21,11 @@ const createToDoTask = async (userTask) => {
   });
 };
 
-form.addEventListener("submit", function (e) {
-  e.preventDefault();
-  const userTask = inputTask.value.trim();
-  userTask ? createToDoTask(userTask) : null;
+form.addEventListener("keyup", function (e) {
+  if (e.keyCode === 13) {
+    const userTask = inputTask.value.trim();
+    userTask ? createToDoTask(userTask) : null;
+  }
 });
 
 const deleteTask = async (id) => {
@@ -33,24 +34,9 @@ const deleteTask = async (id) => {
   });
 };
 
-const getTasks = async () => {
-  const res = await fetch(API + "/todoTasks");
-  const todoTasks = await res.json();
-  for (const task of todoTasks) {
-    taskList.innerHTML += `
-    <ul id="taskList">
-    <li class="taskItem" id="${task.id}">
-        <i class="material-symbols-outlined doneMark">done</i>
-        <span class="taskContent">${task.todoTask}</span>
-        <i class="material-symbols-outlined editTask">edit_square</i>
-        <i class="material-symbols-outlined deleteTask">delete</i>
-    </li>
-    `;
-  }
-};
-
 const editTasks = async (id) => {
   inputTask.focus();
+  // editBtn.style.background = "green";
   const updatedTask = {
     todoTask: inputTask.value,
   };
@@ -63,15 +49,12 @@ const editTasks = async (id) => {
         "Content-type": "application/json",
       },
     });
-    alert("The task was edited");
+    res.status === 200 ? alert("The task was edited") : null;
   } else {
     alert("you must  write some word!!!");
   }
+  editBtn.style.background = "gray";
 };
-
-editBtn.addEventListener("click", function () {
-  editTasks(this.id);
-});
 
 const getSingleTask = async (id) => {
   const res = await fetch(API + `/todoTasks/${id}`);
@@ -79,30 +62,6 @@ const getSingleTask = async (id) => {
   const taskContent = todoTasks.todoTask;
   taskContent ? (inputTask.value = taskContent) : null;
 };
-
-//  Delete and Edite Task event
-taskList.addEventListener("click", function (e) {
-  const id = e.target.parentElement.id;
-
-  // Send task to Done
-  if (e.target.classList.contains("doneMark")) {
-    deleteTask(id);
-  }
-
-  // Delete task
-  if (e.target.classList.contains("deleteTask")) {
-    const deleteConfirmation = confirm("Are You Sure ?");
-    if (deleteConfirmation) {
-      deleteTask(id);
-    }
-  }
-
-  // Edit and put Task in Input
-  if (e.target.classList.contains("editTask")) {
-    getSingleTask(id);
-    editBtn.id = id;
-  }
-});
 
 // Delete Done Task
 const deleteDone = async (id) => {
@@ -133,8 +92,34 @@ const undoDone = async (id, temperaryStorage) => {
   swapDoneToToDo(temperaryTask);
 };
 
+const CreateDoneTasks = async (id, temperaryStorage) => {
+  const temperaryTask = temperaryStorage;
+  console.log(temperaryTask);
+  const SendTodoToDone = async (temperaryTask) => {
+    const res = await fetch(API + "/doneTasks", {
+      method: "POST",
+      body: JSON.stringify({
+        doneTask: temperaryTask,
+      }),
+      headers: {
+        "Content-type": "application/json",
+      },
+    });
+
+    if (res.status === 201) {
+      const res = await fetch(API + `/todoTasks/${id}`, {
+        method: "DELETE",
+      });
+      console.log(id);
+    }
+  };
+  SendTodoToDone(temperaryTask);
+};
+
+// =======  Event Linstenrs  =====>>>>>
 doneList.addEventListener("click", function (e) {
   const id = e.target.parentElement.id;
+
   // Delete Done Task
   if (e.target.classList.contains("deleteTask")) {
     const deleteConfirmation = confirm("Are You Sure This?");
@@ -153,20 +138,53 @@ doneList.addEventListener("click", function (e) {
         const res = await fetch(url);
         const singleDone = await res.json();
         let temperaryStorage = singleDone.doneTask;
-        // console.log(temperaryStorage);
-
         undoDone(id, temperaryStorage);
       };
       getSingleDoneData(url);
-
-      // console.log(temperaryStorage);
     }
+  }
+});
+
+//  Delete and Edite Task event and Move to Dones List
+taskList.addEventListener("click", function (e) {
+  const id = e.target.parentElement.id;
+
+  // Send task to Done
+  if (e.target.classList.contains("doneMark")) {
+    const url = API + `/todoTasks/${id}`;
+    const getSingleTodoData = async (url) => {
+      const res = await fetch(url);
+      const singleDone = await res.json();
+      let temperaryStorage = singleDone.todoTask;
+      CreateDoneTasks(id, temperaryStorage);
+    };
+    getSingleTodoData(url);
+  }
+
+  // Delete task
+  if (e.target.classList.contains("deleteTask")) {
+    const deleteConfirmation = confirm("Are You Sure ?");
+    if (deleteConfirmation) {
+      deleteTask(id);
+    }
+  }
+
+  // Edit and put Task in Input
+  if (e.target.classList.contains("editTask")) {
+    // editBtn.style.background = "green";
+    editBtn.setAttribute("class", "active");
+    getSingleTask(id);
+    editBtn.id = id;
   }
 });
 
 addBtn.addEventListener("click", () => {
   const userTask = inputTask.value.trim();
   userTask ? createToDoTask(userTask) : null;
+});
+
+editBtn.addEventListener("click", function () {
+  editTasks(this.id);
 });
 
 // Get Dones Task
@@ -176,11 +194,26 @@ const getDones = async () => {
   for (done of doneTasks) {
     doneList.innerHTML += `
     <li class="doneItem" id="${done.id}">
-    <i class="material-symbols-outlined statusChecked">close</i>
+    <i class="material-symbols-outlined statusChecked">done</i>
     <span class="doneContent">${done.doneTask}</span>
     <i class="material-symbols-outlined restoreTask">restart_alt</i>
     <i class="material-symbols-outlined deleteTask">delete</i>
   </li>
+    `;
+  }
+};
+
+const getTasks = async () => {
+  const res = await fetch(API + "/todoTasks");
+  const todoTasks = await res.json();
+  for (const task of todoTasks) {
+    taskList.innerHTML += `
+    <li class="taskItem" id="${task.id}">
+        <i class="material-symbols-outlined doneMark">close</i>
+        <span class="taskContent">${task.todoTask}</span>
+        <i class="material-symbols-outlined editTask">edit_square</i>
+        <i class="material-symbols-outlined deleteTask">delete</i>
+    </li>
     `;
   }
 };
