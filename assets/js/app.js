@@ -1,15 +1,16 @@
 // Select DOM Element ==>
 const form = document.querySelector(".form");
 const inputTask = document.getElementById("inputTask");
-const addBtn = document.querySelector(".addBtn");
-const editBtn = document.querySelector(".editBtn");
+const addBtn = document.getElementById("addBtn");
+const editBtn = document.getElementById("editBtn");
+const editBtnText = document.querySelector("#editBtn > span");
 const taskList = document.querySelector("#taskList");
+const doneTitle = document.querySelector(".donesTitle");
 const doneList = document.querySelector("#doneList");
-// const doneItem = document.querySelector("#doneList > li");
+const doneItem = document.querySelector("#doneList > li");
 const API = "http://localhost:3000";
 
-editBtn.disabled = true;
-inputTask.focus();
+// default assigning ==>
 
 const createToDoTask = async (userTask) => {
   const res = await fetch(API + "/todoTasks", {
@@ -188,9 +189,10 @@ taskList.addEventListener("click", function (e) {
 
   // Edit and put Task in Input
   if (e.target.classList.contains("editTask")) {
-    // editBtn.style.background = "green";
-    editBtn.setAttribute("class", "active");
+    // editBtn.setAttribute("class", "active");
     editBtn.disabled = false;
+    editBtnText.style.color = "#fff";
+    editBtn.setAttribute("class", "GlassMorphism__Button");
     getSingleTask(id);
     editBtn.id = id;
   }
@@ -244,6 +246,7 @@ getTasks();
 getDones();
 
 // ================== style Codes ==>
+inputTask.focus();
 
 taskList.addEventListener("mouseover", function (e) {
   if (e.target.classList.contains("doneMark")) {
@@ -274,3 +277,13 @@ doneList.addEventListener("mouseout", function (e) {
     statusBtn.style.backgroundColor = "green";
   }
 });
+
+function disabledEditBtn() {
+  editBtn.disabled = true;
+  if (editBtn.disabled) {
+    editBtn.classList.remove("GlassMorphism__Button");
+    editBtnText.setAttribute("class", "GlassMorphism__LightSpan");
+    editBtnText.style.color = "gray";
+  }
+}
+disabledEditBtn();
