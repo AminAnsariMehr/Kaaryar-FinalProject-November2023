@@ -5,8 +5,10 @@ const addBtn = document.querySelector(".addBtn");
 const editBtn = document.querySelector(".editBtn");
 const taskList = document.querySelector("#taskList");
 const doneList = document.querySelector("#doneList");
+// const doneItem = document.querySelector("#doneList > li");
 const API = "http://localhost:3000";
 
+editBtn.disabled = true;
 inputTask.focus();
 
 const createToDoTask = async (userTask) => {
@@ -36,7 +38,6 @@ const deleteTask = async (id) => {
 
 const editTasks = async (id) => {
   inputTask.focus();
-  // editBtn.style.background = "green";
   const updatedTask = {
     todoTask: inputTask.value,
   };
@@ -94,7 +95,6 @@ const undoDone = async (id, temperaryStorage) => {
 
 const CreateDoneTasks = async (id, temperaryStorage) => {
   const temperaryTask = temperaryStorage;
-  console.log(temperaryTask);
   const SendTodoToDone = async (temperaryTask) => {
     const res = await fetch(API + "/doneTasks", {
       method: "POST",
@@ -105,6 +105,17 @@ const CreateDoneTasks = async (id, temperaryStorage) => {
         "Content-type": "application/json",
       },
     });
+
+    // const SendTodoToDone = async (temperaryTask) => {
+    //   const res = await fetch(API + "/doneTasks", {
+    //     method: "POST",
+    //     body: JSON.stringify({
+    //       doneTask: temperaryTask,
+    //     }),
+    //     headers: {
+    //       "Content-type": "application/json",
+    //     },
+    //   });
 
     if (res.status === 201) {
       const res = await fetch(API + `/todoTasks/${id}`, {
@@ -133,12 +144,16 @@ doneList.addEventListener("click", function (e) {
     const returnConfirmation = confirm("Are You Sure This?");
 
     if (returnConfirmation) {
+      e.target.parentElement.style.transform = "translateX(-100%)";
+      const statusBtn = e.target.parentElement.querySelector(".statusChecked");
+      statusBtn.innerHTML = "close";
+      statusBtn.style.background = "red";
       const url = API + `/doneTasks/${id}`;
       const getSingleDoneData = async (url) => {
         const res = await fetch(url);
         const singleDone = await res.json();
         let temperaryStorage = singleDone.doneTask;
-        undoDone(id, temperaryStorage);
+        setTimeout(() => undoDone(id, temperaryStorage), 1000);
       };
       getSingleDoneData(url);
     }
@@ -151,12 +166,14 @@ taskList.addEventListener("click", function (e) {
 
   // Send task to Done
   if (e.target.classList.contains("doneMark")) {
+    e.target.innerHTML = "done";
+    e.target.parentElement.style.transform = "translateX(100%)";
     const url = API + `/todoTasks/${id}`;
     const getSingleTodoData = async (url) => {
       const res = await fetch(url);
       const singleDone = await res.json();
       let temperaryStorage = singleDone.todoTask;
-      CreateDoneTasks(id, temperaryStorage);
+      setTimeout(() => CreateDoneTasks(id, temperaryStorage), 1000);
     };
     getSingleTodoData(url);
   }
@@ -173,6 +190,7 @@ taskList.addEventListener("click", function (e) {
   if (e.target.classList.contains("editTask")) {
     // editBtn.style.background = "green";
     editBtn.setAttribute("class", "active");
+    editBtn.disabled = false;
     getSingleTask(id);
     editBtn.id = id;
   }
@@ -198,8 +216,12 @@ const getDones = async () => {
     <span class="doneContent">${done.doneTask}</span>
     <i class="material-symbols-outlined restoreTask">restart_alt</i>
     <i class="material-symbols-outlined deleteTask">delete</i>
-  </li>
+    </li>
     `;
+    setTimeout(
+      () => (document.getElementById(`${done.id}`).style.opacity = "1"),
+      20
+    );
   }
 };
 
@@ -220,3 +242,35 @@ const getTasks = async () => {
 
 getTasks();
 getDones();
+
+// ================== style Codes ==>
+
+taskList.addEventListener("mouseover", function (e) {
+  if (e.target.classList.contains("doneMark")) {
+    e.target.innerHTML = "done";
+    e.target.style.backgroundColor = "green";
+  }
+});
+
+taskList.addEventListener("mouseout", function (e) {
+  if (e.target.classList.contains("doneMark")) {
+    e.target.innerHTML = "close";
+    e.target.style.backgroundColor = "red";
+  }
+});
+
+doneList.addEventListener("mouseover", function (e) {
+  if (e.target.classList.contains("restoreTask")) {
+    const statusBtn = e.target.parentElement.querySelector(".statusChecked");
+    statusBtn.innerHTML = "close";
+    statusBtn.style.backgroundColor = "red";
+  }
+});
+
+doneList.addEventListener("mouseout", function (e) {
+  if (e.target.classList.contains("restoreTask")) {
+    const statusBtn = e.target.parentElement.querySelector(".statusChecked");
+    statusBtn.innerHTML = "done";
+    statusBtn.style.backgroundColor = "green";
+  }
+});
