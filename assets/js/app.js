@@ -10,8 +10,6 @@ const doneList = document.querySelector("#doneList");
 const doneItem = document.querySelector("#doneList > li");
 const API = "http://localhost:3000";
 
-// default assigning ==>
-
 const createToDoTask = async (userTask) => {
   const res = await fetch(API + "/todoTasks", {
     method: "POST",
@@ -52,8 +50,6 @@ const editTasks = async (id) => {
       },
     });
     res.status === 200 ? alert("The task was edited") : null;
-  } else {
-    alert("you must  write some word!!!");
   }
   editBtn.style.background = "gray";
 };
@@ -106,17 +102,6 @@ const CreateDoneTasks = async (id, temperaryStorage) => {
         "Content-type": "application/json",
       },
     });
-
-    // const SendTodoToDone = async (temperaryTask) => {
-    //   const res = await fetch(API + "/doneTasks", {
-    //     method: "POST",
-    //     body: JSON.stringify({
-    //       doneTask: temperaryTask,
-    //     }),
-    //     headers: {
-    //       "Content-type": "application/json",
-    //     },
-    //   });
 
     if (res.status === 201) {
       const res = await fetch(API + `/todoTasks/${id}`, {
@@ -189,10 +174,12 @@ taskList.addEventListener("click", function (e) {
 
   // Edit and put Task in Input
   if (e.target.classList.contains("editTask")) {
-    // editBtn.setAttribute("class", "active");
     editBtn.disabled = false;
     editBtnText.style.color = "#fff";
-    editBtn.setAttribute("class", "GlassMorphism__Button");
+    editBtn.setAttribute(
+      "class",
+      "GlassMorphism__Button flex-row-align-center"
+    );
     getSingleTask(id);
     editBtn.id = id;
   }
@@ -245,7 +232,7 @@ const getTasks = async () => {
 getTasks();
 getDones();
 
-// ================== style Codes ==>
+// ================== Style Codes =======>
 inputTask.focus();
 
 taskList.addEventListener("mouseover", function (e) {
@@ -282,8 +269,12 @@ function disabledEditBtn() {
   editBtn.disabled = true;
   if (editBtn.disabled) {
     editBtn.classList.remove("GlassMorphism__Button");
-    editBtnText.setAttribute("class", "GlassMorphism__LightSpan");
+    editBtnText.setAttribute(
+      "class",
+      "GlassMorphism__LightSpan flex-row-align-center"
+    );
     editBtnText.style.color = "gray";
   }
 }
+
 disabledEditBtn();

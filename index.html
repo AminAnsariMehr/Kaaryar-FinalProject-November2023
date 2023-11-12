@@ -13,32 +13,29 @@
 </head>
 
 <body>
-    <div class="container">
-        <div id="errorBox">
-            <p id="errorMassage">Please write something !!</p>
-            <button>OK</button>
-        </div>
-        <div class="todoListWrapper">
+    <div class="container flex-row-align-center">
+
+        <div class="todoListWrapper flex-column-align-start">
             <div class="form" action="">
                 <input type="text" id="inputTask">
             </div>
 
             <div class="btnsWrapper">
                 <button id="addBtn" class="GlassMorphism__Button ">
-                    <span class="GlassMorphism__LightSpan">Add Task</span>
+                    <span class="GlassMorphism__LightSpan flex-row-align-center">Add Task</span>
                 </button>
                 <button id="editBtn">
                     <span>Edit Task</span>
                 </button>
             </div>
 
-            <ul id="taskList"></ul>
+            <ul id="taskList" class=" flex-column-align-center"></ul>
 
         </div>
 
-        <div class="doneListWrapper">
+        <div class="doneListWrapper flex-column-align-start">
             <h3 class="donesTitle">Task Dones</h3>
-            <ul id="doneList"></ul>
+            <ul id="doneList" class=" flex-column-align-center"></ul>
         </div>
     </div>
 </body>
