@@ -3,7 +3,20 @@
     {
       "todoTask": "amin",
       "id": 1
+    },
+    {
+      "todoTask": "asd",
+      "id": 2
     }
   ],
-  "doneTasks": []
+  "doneTasks": [
+    {
+      "doneTask": "ansari",
+      "id": 2
+    },
+    {
+      "doneTask": "amin",
+      "id": 3
+    }
+  ]
 }
